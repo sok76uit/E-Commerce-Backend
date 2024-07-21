@@ -16,6 +16,17 @@ builder.Services.AddDbContext<ECommerceContext>(opt => opt.UseSqlServer(builder.
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 
@@ -26,6 +37,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
